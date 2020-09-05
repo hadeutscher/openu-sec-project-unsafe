@@ -45,6 +45,12 @@ std::vector<byte> Socket::recv(int len) {
 	std::vector<byte> result;
 	result.resize(len);
 	char* data = reinterpret_cast<char*>(result.data());
-	::recv(s, data, len, MSG_WAITALL);
+	int err = ::recv(s, data, len, MSG_WAITALL);
+	if (err == 0) {
+		throw SocketClosed();
+	}
+	else if (err == SOCKET_ERROR || err != len) {
+		throw std::runtime_error("recv error");
+	}
 	return std::move(result);
 }

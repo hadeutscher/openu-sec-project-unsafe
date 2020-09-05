@@ -3,6 +3,7 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <vector>
+#include <exception>
 
 #include "sockaddr.h"
 
@@ -22,3 +23,5 @@ protected:
 	Socket(SOCKET s) : s(s) {}
 	SOCKET s;
 };
+
+class SocketClosed : public std::exception {};
